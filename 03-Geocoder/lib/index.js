@@ -26,23 +26,10 @@ const displayCoordinates = (coordinates) => {
   });
 }
 
-const getUserInput = () => {
-
-  const geoCodeButton = document.querySelector('form');
-  let userInput = document.querySelector('form input');
-  console.log(userInput.value)
-
-  geoCodeButton.addEventListener('submit', (event) => {
-    event.preventDefault();
-    userInput = userInput.value
-    return userInput
-  });
-  console.log(userInput.value)
-};
-
 const showMap = (userInput) => {
-
+  console.log(userInput)
   const coordinates = extractCoordinates(userInput)
+  console.log(coordinates)
   displayCoordinates(coordinates)
   // - Display the coordinates in the element where the coordinates will be displayed
       // - Create a map using the Mapbox API and the coordinates
@@ -50,9 +37,18 @@ const showMap = (userInput) => {
 
 };
 
-getUserInput()
-showMap(getUserInput)
+const geoCodeButton = document.querySelector('form');
+let userInput = document.querySelector('form input');
+
+geoCodeButton.addEventListener('submit', (event) => {
+  event.preventDefault();
+  userInput = userInput.value
+  showMap(userInput)
+});
+
+
 //
+
 // TODO: Select the form element
 // TODO: Add event listener to the form that:
 // - Prevents the default form submission behavior
