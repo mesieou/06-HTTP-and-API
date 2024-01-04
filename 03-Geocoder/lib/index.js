@@ -7,19 +7,19 @@ const constructUrl = (userInput) => {
   return `https://api.mapbox.com/geocoding/v5/mapbox.places/${userInput}.json?access_token=${apiKey}`;
 };
 
-const fetchApi =
+const formatAndDisplayCoordinates = (data) => {
+  const coordinatesElement = document.querySelector('.font-monospace');
+  const longitude = data.features[0].center[0];
+  const latitude = data.features[0].center[1];
+  const coordinates = `${longitude}, ${latitude}`;
+
+  coordinatesElement.textContent = coordinates;
+};
 
 const displayCoordinates = (userInput) => {
-  const coordinatesElement = document.querySelector('.font-monospace');
-
   fetch(constructUrl(userInput))
     .then((response) => response.json())
-    .then((data) => {
-      const longitude = data.features[0].center[0];
-      const latitude = data.features[0].center[1];
-      const coordinates = `${longitude}, ${latitude}`;
-      coordinatesElement.textContent = coordinates;
-    });
+    .then( data => formatAndDisplayCoordinates(data));
 }
 
 geoCodeButton.addEventListener('submit', (event) => {
