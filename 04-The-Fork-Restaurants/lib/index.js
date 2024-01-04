@@ -1,30 +1,27 @@
 // Todo: Use the Fork Api to get a filtered list of restaurants, depending on the category selected (and as a bonus, the location)
+const searchForm = document.getElementById("searchForm");
+
 const constructEndPoint = (category) => {
   return `https://the-fork-api.students.lewagon.co/api/v1/restaurants?category=${category}`
 };
 
+const instertHtmlData = (data) => {
+  const restaurantsHtmlContainer = document.querySelector('.list-group')
+  const restaurantsHtml = data.map(restaurant => `<li class="list-group-item">${restaurant.name}</li>`).join('')
+  restaurantsHtmlContainer.innerHTML = restaurantsHtml;
+};
 
-const searchForm = document.getElementById("searchForm");
-
-// Todo: select the HTML elements you need
-
-
-searchForm.addEventListener("submit", (event) => {
-  // Todo: Find the category selected and build the URL you will send your request to
-  event.preventDefault();
+const getCuisineSelected = () => {
   const allcuisineElements = document.querySelectorAll('.form-check-input')
   const allcuisineElementsArray = Array.from(allcuisineElements)
   const cuisineSelectedElement = allcuisineElementsArray.filter(element => element.checked);
+  return cuisineSelectedElement[0].defaultValue
+}
 
-  const categorySelected = cuisineSelectedElement[0].defaultValue
-  const endPoint = constructEndPoint(categorySelected)
-
-  const restaurantsHtmlContainer = document.querySelector('.list-group')
-  // Todo: Replace "the-endpoint-url" with the URL you built
+searchForm.addEventListener("submit", (event) => {
+  const endPoint = constructEndPoint(getCuisineSelected())
+  event.preventDefault();
   fetch(endPoint)
     .then(response => response.json())
-    .then((data) => {
-      const restaurantsHtml = data.map(restaurant => `<li class="list-group-item">${restaurant.name}</li>`).join('')
-      restaurantsHtmlContainer.innerHTML = restaurantsHtml;
-    });
+    .then((data) => instertHtmlData(data));
 })
